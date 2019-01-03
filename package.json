@@ -1,5 +1,5 @@
 {
-  "name": "reactive-bulma",
+  "name": "react_bulma",
   "version": "1.0.0",
   "description": "",
   "author": "undefined",
@@ -9,16 +9,14 @@
     "npm": "^6.4.1"
   },
   "scripts": {
-    "start": "concurrently --kill-others \"nodemon --exec babel-node server.js\" \"onchange -v \"src/**/**/*.js\" \"src/**/**/*.scss\" -- npm run build\"",
+    "start": "concurrently --kill-others \"npm run build && npm run serve\" \"onchange -v \"src/**/**/*.js\" \"src/**/**/*.scss\" -- npm run build\"",
     "watch": "onchange -v \"src/**/**/*.js\" \"src/**/**/*.scss\" -- npm run build",
-    "webpack": "webpack -p",
-    "babel_shared": "babel src/shared -d shared",
-    "babel_server": "babel src/server -d server",
-    "build": "npm run webpack && npm run babel_shared && npm run babel_server",
-    "clean": "rm -rf assets && rm -rf shared && rm server.js",
-    "reset_node_modules": "rm -rf node_modules && rm package-lock.json && yarn.lock && \"npm i\" && \"yarn install\"",
-    "test": "echo \"Error: no test specified\" && exit 1",
-    "prod": "node server/index.js"
+    "serve":"webpack-dev-server --config ./webpack.config.js --config-name buildreact",
+    "babel_shared": "babel src/shared -d dist/shared",
+    "build":"npm run build-react && npm run build-sass",
+    "build-react": "webpack -p --config-name buildreact && npm run babel_shared",
+    "build-sass": "webpack -p --config-name compilesass ",
+    "test": "echo \"Error: no test specified\" && exit 1"
   },
   "devDependencies": {
     "@babel/cli": "^7.1.2",

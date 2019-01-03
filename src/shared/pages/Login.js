@@ -20,7 +20,7 @@ class Login extends Component {
         <section className='section'>
           <div className='columns'>
             <div className='column'>
-              <p className='title is-2'>Login</p>
+              <p className='title is-2'>Login To Capsule Corp</p>
               <LoginForm {...this.props} />
             </div>
           </div>

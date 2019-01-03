@@ -8,14 +8,7 @@ class Widgets extends Component {
 
     super(props)
 
-    let widgets
-
-    if (__isBrowser__) {
-      widgets = window.__INITIAL_DATA__
-      delete window.__INITIAL_DATA__
-    } else {
-      widgets = props.staticContext
-    }
+    let widgets = props.staticContext;
 
     this.state = {
       loading: widgets && widgets.hasOwnProperty('data') ? false : true,

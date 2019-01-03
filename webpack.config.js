@@ -3,104 +3,106 @@ const Path = require('path'),
   CopyWebpackPlugin = require('copy-webpack-plugin'),
   NodeExternals = require('webpack-node-externals'),
 
-  sharedRules = [
-    {
-      test: /\.js$/,
-      use: 'babel-loader',
-    },
-    {
-      test: /\.json($|\?)/,
-      use: 'json-loader',
-      type: 'javascript/auto'
-    },
-    {
-      test: /.(jpg|jpeg|png|svg)$/,
-      exclude: /node_modules/,
-      use: [
-        {
-          loader:'file-loader',
-          options:{
-            outputPath:Path.resolve(__dirname, 'assets')
-          }
-        }
-      ]
-    },
-    {
-      test: /\.scss$/,
-      use: [
-        {
-          loader: 'file-loader',
-          options: {
-          name: 'assets/[name].css',
-        }
-        },
-        {
-          loader: 'extract-loader'
-        },
-        {
-          loader: 'css-loader?-url'
-        },
-        {
-          loader: 'postcss-loader'
-        },
-        {
-          loader: 'sass-loader'
-        }
-      ]
-    }
-  ],
-
-  browserConfig = {
+  configurations = [{
+    name:'buildreact',
     resolve: {
       extensions: ['*', '.js', '.jsx', '.json']
     },
     target: 'web',
     devtool: 'source-map',
     mode: 'development',
-    entry: ['./src/browser/index.js'],
+    entry: ['./src/index.js'],
     output: {
-      path: Path.resolve(__dirname, 'assets'),
+      path: Path.resolve(__dirname, 'dist'),
       filename: 'bundle.js',
       publicPath: '/'
     },
     module: {
-      rules: sharedRules
+      rules: [{
+        test: /\.(js|jsx)$/,
+        exclude: /node_modules/,
+        use: ['babel-loader'],
+      },
+      {
+        test: /\.json($|\?)/,
+        use: ['json-loader'],
+        exclude: /node_modules/,
+        type: 'javascript/auto'
+      },
+      {
+        test: /.(jpg|jpeg|png|svg)$/,
+        exclude: /node_modules/,
+        use: [
+          {
+            loader:'file-loader',
+            options:{
+              outputPath:Path.resolve(__dirname, 'assets')
+            }
+          }
+        ]
+      }]
     },
     plugins: [
-      new Webpack.DefinePlugin({
-        __isBrowser__: "true",
-        'process.env': {
-          __isBrowser__: true
+      new Webpack.HotModuleReplacementPlugin(),
+      new CopyWebpackPlugin([
+        {
+          from: Path.resolve(__dirname, 'src/index.html'),
+          to: Path.resolve(__dirname, 'dist')
+        },
+        {
+          from: Path.resolve(__dirname, 'src/assets'),
+          to: Path.resolve(__dirname, 'dist/assets')
         }
-      }),
-    ]
+      ])
+    ],
+    devServer: {
+      contentBase: './dist',
+      index:'index.html',
+      hot: true
+    }
   },
-
-  serverConfig = {
-    target: 'node',
-    externals: [NodeExternals()],
-    mode: 'development',
+  {
+    name:'compilesass',
+    resolve: {
+      extensions: ['*', '.js', '.jsx', '.json']
+    },
+    target: 'web',
     devtool: 'source-map',
-    entry: ['@babel/polyfill', './src/server/index.js'],
+    mode: 'development',
+    entry: ['./src/assets/sass/style.scss'],
     output: {
-      path: __dirname,
-      filename: 'server.js',
+      path: Path.resolve(__dirname, 'dist'),
       publicPath: '/'
     },
-    module: {
-      rules: sharedRules
-    },
-    plugins: [
-      new CopyWebpackPlugin([
-        {from:'src/assets/img', to:'assets/img'}
-      ]),
-      new Webpack.DefinePlugin({
-        __isBrowser__: "false",
-        'process.env': {
-          __isBrowser__: false
+    module:{
+      rules:[
+        {
+          test: /\.scss$/,
+          exclude: /node_modules/,
+          use: [
+            {
+              loader: 'file-loader',
+              options: {
+              name: 'assets/[name].css',
+            }
+            },
+            {
+              loader: 'extract-loader'
+            },
+            {
+              loader: 'css-loader?-url'
+            },
+            {
+              loader: 'postcss-loader'
+            },
+            {
+              loader: 'sass-loader'
+            }
+          ]
         }
-      }),
-    ]
+      ]
+    }
   }
+]
 
-module.exports = [browserConfig, serverConfig]
+module.exports = configurations
