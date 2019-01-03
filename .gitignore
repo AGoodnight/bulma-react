@@ -1,0 +1,6 @@
+/server/
+/node_modules/
+/shared/
+/server.js
+/server.js.map
+/assets/
