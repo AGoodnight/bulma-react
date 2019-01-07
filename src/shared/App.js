@@ -18,13 +18,12 @@ class App extends Component {
 
     super(props)
 
-    const { account, apps } = props
+    const { account } = props
 
 
     this.state = {
       accountIsInSession: Object.keys(account).length !== 0,
-      account: account,
-      apps: apps
+      account: account
     }
 
   }
@@ -58,7 +57,6 @@ App.propTypes = {
 const mapStateToProps = state => ({
     // Top Level State to control 2nd level components
     account: state.account,
-    apps: state.apps
   }),
   mapDispatchToProps = dispatch => ({
     actions: bindActionCreators(actions, dispatch)

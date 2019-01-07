@@ -2,7 +2,7 @@ import { Api as api } from '../apis/index'
 import { ActionDictionary as ACTIONS } from '../constants/actions'
 
 const success = (data) => ({
-  type: ACTIONS.ACTIONS.LOGIN.SUCCESS, data
+  type: ACTIONS.LOGIN.SUCCESS, data
 })
 
 export const login = data => {

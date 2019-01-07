@@ -21,12 +21,12 @@ const Routes = [
     }),
   },
   {
-    path: '/login',
-    component: Login
-  },
-  {
     path: navStructure.ITEMS.myAccount.path,
     component: Account,
+  },
+  {
+    path: '/login',
+    component: Login
   }
 ]
 
