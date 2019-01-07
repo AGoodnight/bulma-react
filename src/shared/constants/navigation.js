@@ -8,8 +8,8 @@ const NavigationStructure = {
       path: '/',
       isPrivate:false
     },
-    myApps:{
-      name: 'Your Apps',
+    myWidgets:{
+      name: 'My Widgets',
       path: '/widgets',
       isPrivate:true
     },

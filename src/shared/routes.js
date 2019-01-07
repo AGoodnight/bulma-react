@@ -13,7 +13,7 @@ const Routes = [
     component: Home
   },
   {
-    path: navStructure.ITEMS.myApps.path,
+    path: navStructure.ITEMS.myWidgets.path,
     component: Widgets,
     fetchInitialData: () => new Promise((resolve, reject) => {
       const data = mockApi.load()
